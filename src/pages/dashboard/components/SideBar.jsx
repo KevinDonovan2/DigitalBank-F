@@ -85,7 +85,7 @@ export default function SideBar() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/dashboard'); }}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/'); }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,

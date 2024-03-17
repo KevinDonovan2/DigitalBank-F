@@ -18,7 +18,7 @@ export const options = {
 export default function ChartPie() {
     return (
         <Chart
-            chartType='PieChart'
+            chartType="PieChart"
             data={data}
             options={options}
             width={'100%'}

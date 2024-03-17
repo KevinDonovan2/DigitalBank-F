@@ -2,7 +2,14 @@ import React from 'react';
 
 const NotFound = () => {
     return (
-        <div style={{display:'flex' ,justifyContent:'center', alignItems:'center' , flexDirection:'column'}}>
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+            }}
+        >
             <h1>404 - Page Not Found</h1>
             <p>Sorry, the page you are looking for does not exist.</p>
         </div>

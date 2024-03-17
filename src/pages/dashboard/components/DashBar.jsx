@@ -13,8 +13,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useDrawer } from '../../../context/DrawerContext';
 
-const AppBar = styled(MuiAppBar, {
-})(({ theme }) => ({
+const AppBar = styled(
+    MuiAppBar,
+    {},
+)(({ theme }) => ({
     zIndex: theme.zIndex.drawer + 1,
 }));
 
@@ -64,7 +66,6 @@ export default function DashBar() {
 
     const isMenuOpen = Boolean(anchorEl);
 
-
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -98,7 +99,7 @@ export default function DashBar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="fixed">
-                <Toolbar >
+                <Toolbar>
                     <Box>
                         <IconButton
                             size="large"
@@ -117,7 +118,7 @@ export default function DashBar() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
-                        DigitalBank
+            DigitalBank
                     </Typography>
                     <Search>
                         <SearchIconWrapper>

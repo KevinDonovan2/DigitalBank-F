@@ -19,9 +19,9 @@ export const options = {
 export default function ChartBar() {
     return (
         <Chart
-            chartType='AreaChart'
-            width='100%'
-            height='400px'
+            chartType="AreaChart"
+            width="100%"
+            height="400px"
             data={data}
             options={options}
         />

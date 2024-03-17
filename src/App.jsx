@@ -10,10 +10,10 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Dashboard />}/>
-                <Route path="/account" element={<Account />}/>
-                <Route path="/transaction" element={<Transaction />}/>
-                <Route path="/analystic" element={<Analystic />}/>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/transaction" element={<Transaction />} />
+                <Route path="/analystic" element={<Analystic />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

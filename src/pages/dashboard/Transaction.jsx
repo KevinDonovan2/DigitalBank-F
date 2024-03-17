@@ -8,7 +8,7 @@ function Transaction() {
     return (
         <DrawerProvider>
             <DashBar />
-            <Box sx={{ display: 'flex', flexGrow: 1, p: 3 , mt:5}}>
+            <Box sx={{ display: 'flex', flexGrow: 1, p: 3, mt: 5 }}>
                 <SideBar />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <h1>Product</h1>

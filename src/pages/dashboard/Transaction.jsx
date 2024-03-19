@@ -9,7 +9,7 @@ function Transaction() {
     return (
         <DrawerProvider>
             <DashBar />
-            <Box sx={{ display: 'flex', flexGrow: 1, p: 3, mt: 5 }}>
+            <Box sx={{ display: 'flex', flexGrow: 1, p: 3, mt: 5 ,backgroundColor:'whitesmoke' ,height: '93vh'}}>
                 <SideBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <TransactionList />

@@ -10,10 +10,10 @@ function Analystic() {
     return (
         <DrawerProvider>
             <DashBar />
-            <Box sx={{ display: 'flex', flexGrow: 1, p: 3, mt: 5 }}>
+            <Box sx={{ display: 'flex', flexGrow: 1, p: 3, mt: 5 ,backgroundColor:'whitesmoke' ,height: '93vh'}}>
                 <SideBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                         <Stack spacing={2} direction="row">
                             <Card sx={{ maxWidth: 645 }}>
                                 <CardContent>

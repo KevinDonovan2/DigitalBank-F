@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
-import AddAccounts from './AddAccounts'; // Importez le composant AddAccounts
+import AddAccounts from './AddAccounts'; 
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 100 },
@@ -20,10 +20,10 @@ const columns = [
 function AccountList() {
     const [rows, setRows] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false); // État de visibilité de la fenêtre modale AddAccounts
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
     useEffect(() => {
-        axios.get('/api/transactions') // Remplacez '/api/transactions' par l'URL réelle de votre backend
+        axios.get('/api/transactions')
             .then(response => {
                 setRows(response.data);
             })
@@ -33,7 +33,7 @@ function AccountList() {
     }, []);
 
     const handleAddAccount = () => {
-        setIsAddDialogOpen(true); // Ouvrir la fenêtre modale AddAccounts lors du clic sur le bouton "Add"
+        setIsAddDialogOpen(true);
     };
 
     const handleSearchChange = (event) => {
@@ -41,15 +41,15 @@ function AccountList() {
     };
 
     const handleCloseAddDialog = () => {
-        setIsAddDialogOpen(false); // Fermer la fenêtre modale AddAccounts
+        setIsAddDialogOpen(false);
     };
 
     const handleAdd = (newAccount) => {
-        // Ajoutez ici la logique pour ajouter un nouveau compte à la liste rows
-        console.log('New account added:', newAccount);
-        // Fermez la fenêtre modale après l'ajout du compte
+        setRows(prevRows => [...prevRows, newAccount]);
+    
         setIsAddDialogOpen(false);
     };
+    
 
     const filteredRows = rows.filter(row =>
         row.name.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -72,7 +72,7 @@ function AccountList() {
                         onChange={handleSearchChange}
                     />
                 </div>
-                <Button variant="contained" onClick={handleAddAccount} sx={{ margin: '20px' }}>Add</Button>
+                <Button variant="contained" onClick={handleAddAccount} sx={{ margin: '20px' }}>+ Add</Button>
             </div>
             <Divider />
             <TableContainer sx={{ maxHeight: 440 }}>

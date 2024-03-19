@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import { Box, Dialog, Divider, DialogTitle, DialogContent, DialogActions, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 function AddAccounts({ open, onClose, onAdd }) {
     const [name, setName] = useState('');
@@ -8,13 +8,11 @@ function AddAccounts({ open, onClose, onAdd }) {
     const [currency, setCurrency] = useState('');
 
     const handleAdd = () => {
-        // Validation des champs, vous pouvez ajouter des validations supplémentaires ici
         if (name.trim() === '' || accountType.trim() === '' || startingAmount.trim() === '' || currency.trim() === '') {
-            alert('Please fill in all fields');
+            alert('champs vide !!!');
             return;
         }
 
-        // Créer un objet compte avec les données saisies
         const newAccount = {
             name: name,
             accountType: accountType,
@@ -22,10 +20,8 @@ function AddAccounts({ open, onClose, onAdd }) {
             currency: currency
         };
 
-        // Appeler la fonction onAdd avec le nouvel objet compte en paramètre
         onAdd(newAccount);
 
-        // Réinitialiser les champs après l'ajout
         setName('');
         setAccountType('');
         setStartingAmount('');
@@ -34,36 +30,51 @@ function AddAccounts({ open, onClose, onAdd }) {
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Add Account</DialogTitle>
-            <DialogContent>
-                <TextField
-                    label="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Account Type"
-                    value={accountType}
-                    onChange={(e) => setAccountType(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Starting Amount"
-                    value={startingAmount}
-                    onChange={(e) => setStartingAmount(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Currency"
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
+            <DialogTitle sx={{ backgroundColor: 'whitesmoke', display: 'flex', justifyContent: 'center' }}>Add Account</DialogTitle>
+            <Divider />
+            <DialogContent sx={{ m: 2 }}>
+                <Box>
+                    <TextField
+                        label="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <FormControl variant="filled" fullWidth sx={{ minWidth: 120 }}>
+                        <InputLabel id="account-type-label">Account Type</InputLabel>
+                        <Select
+                            labelId="account-type-label"
+                            value={accountType}
+                            onChange={(e) => setAccountType(e.target.value)}
+                        >
+                            <MenuItem value="General">General</MenuItem>
+                            <MenuItem value="Cash">Cash</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
+                <Box>
+                    <TextField
+                        label="Starting Amount"
+                        type="number"
+                        value={startingAmount}
+                        onChange={(e) => setStartingAmount(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <FormControl variant="filled" fullWidth sx={{ minWidth: 120 }}>
+                        <InputLabel >Currency</InputLabel>
+                        <Select
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
+                        >
+                            <MenuItem value="MDG">MDG</MenuItem>
+                            <MenuItem value="EUR">EUR</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="secondary">Cancel</Button>

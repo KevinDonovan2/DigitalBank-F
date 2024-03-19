@@ -19,7 +19,7 @@ function TransactionList() {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/transactions') // Remplacez '/api/transactions' par l'URL réelle de votre backend
+        axios.get('/api/transactions')
             .then(response => {
                 setRows(response.data);
             })

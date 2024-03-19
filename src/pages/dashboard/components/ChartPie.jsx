@@ -4,14 +4,12 @@ import { Chart } from 'react-google-charts';
 export const data = [
     ['Task', 'Hours per Day'],
     ['Work', 11],
-    ['Eat', 2],
-    ['Commute', 2],
-    ['Watch TV', 2],
-    ['Sleep', 7],
+    ['Eat', 5],
+    ['Commute', 9]
 ];
 
 export const options = {
-    title: 'My Daily Activities',
+    title: 'All accounts',
     is3D: true,
 };
 

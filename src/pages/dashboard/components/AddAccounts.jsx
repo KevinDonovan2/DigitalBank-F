@@ -77,8 +77,8 @@ function AddAccounts({ open, onClose, onAdd }) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="secondary">Cancel</Button>
-                <Button onClick={handleAdd} color="primary">Add</Button>
+                <Button onClick={onClose} variant="outlined" color="secondary">Cancel</Button>
+                <Button onClick={handleAdd} variant="outlined" color="primary">Add</Button>
             </DialogActions>
         </Dialog>
     );

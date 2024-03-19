@@ -3,6 +3,7 @@ import React from 'react';
 import SideBar from './components/SideBar';
 import DashBar from './components/DashBar';
 import { DrawerProvider } from '../../context/DrawerContext';
+import TransactionList from './components/TransactionList';
 
 function Transaction() {
     return (
@@ -10,9 +11,9 @@ function Transaction() {
             <DashBar />
             <Box sx={{ display: 'flex', flexGrow: 1, p: 3, mt: 5 }}>
                 <SideBar />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <h1>Product</h1>
-                </div>
+                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                    <TransactionList />
+                </Box>
             </Box>
         </DrawerProvider>
     );

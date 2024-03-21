@@ -11,12 +11,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import AddAccounts from './AddAccounts';
 import Swal from 'sweetalert2';
+import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 100 },
-    { id: 'accountType', label: 'Account Type', minWidth: 100 },
-    { id: 'startingAmount', label: 'Starting Amount', minWidth: 100 },
-    { id: 'currency', label: 'Currency', minWidth: 100 },
+    { id: 'lastName', label: 'Last Name', minWidth: 100 },
+    { id: 'monthlySalary', label: 'Monthly Salary', minWidth: 100 },
+    { id: 'edit', label: '', minWidth: 100 },
     { id: 'delete', label: '', minWidth: 100 },
 ];
 
@@ -24,6 +25,7 @@ function AccountList() {
     const [rows, setRows] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [editRowData, setEditRowData] = useState(null);
 
     useEffect(() => {
         axios.get('/api/transactions')
@@ -53,11 +55,16 @@ function AccountList() {
         setIsAddDialogOpen(false);
     };
 
+    const handleEdit = (id) => {
+        const rowDataToEdit = rows.find(row => row.id === id);
+        setEditRowData(rowDataToEdit);
+        setIsAddDialogOpen(true);
+    };
+
 
     const filteredRows = rows.filter(row =>
         row.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.accountType.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.currency.toLowerCase().includes(searchValue.toLowerCase())
+        row.lastName.toLowerCase().includes(searchValue.toLowerCase())
     );
 
     const handleDelete = (id) => {
@@ -121,12 +128,14 @@ function AccountList() {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                     <TableCell align='left'>{row.name}</TableCell>
-                                    <TableCell align='left'>{row.accountType}</TableCell>
-                                    <TableCell align='left'>{row.startingAmount}</TableCell>
-                                    <TableCell align='left'>{row.currency}</TableCell>
+                                    <TableCell align='left'>{row.lastName}</TableCell>
+                                    <TableCell align='left'>{row.monthlySalary}ar</TableCell>
+                                    <TableCell align='left'>
+                                        <Button variant="contained" onClick={() => handleEdit(row.id)}> <EditIcon /></Button>
+                                    </TableCell>
                                     {/* Cellule pour le bouton "Delete" */}
                                     <TableCell align='left'>
-                                        <Button variant="contained" onClick={() => handleDelete(row.id)}> <DeleteSweepIcon />Delete</Button>
+                                        <Button variant="contained" onClick={() => handleDelete(row.id)}> <DeleteSweepIcon /></Button>
                                     </TableCell>
                                 </TableRow>
                             );
@@ -134,7 +143,7 @@ function AccountList() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <AddAccounts open={isAddDialogOpen} onClose={handleCloseAddDialog} onAdd={handleAdd} />
+            <AddAccounts open={isAddDialogOpen} onClose={handleCloseAddDialog} onAdd={handleAdd} editRowData={editRowData} />
         </Paper>
     );
 }

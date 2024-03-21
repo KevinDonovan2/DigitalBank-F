@@ -1,36 +1,49 @@
-import React, { useState } from 'react';
-import { Box, Dialog, Divider, DialogTitle, DialogContent, DialogActions, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Dialog, Divider, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 
-function AddAccounts({ open, onClose, onAdd }) {
+function AddAccounts({ open, onClose, onAdd, editRowData }) {
     const [name, setName] = useState('');
-    const [accountType, setAccountType] = useState('');
-    const [startingAmount, setStartingAmount] = useState('');
-    const [currency, setCurrency] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [monthlySalary, setMonthlySalary] = useState('');
+    const [date, setDate] = useState('');
 
-    const handleAdd = () => {
-        if (name.trim() === '' || accountType.trim() === '' || startingAmount.trim() === '' || currency.trim() === '') {
-            alert('champs vide !!!');
+    useEffect(() => {
+        if (editRowData) {
+            setName(editRowData.name);
+            setLastName(editRowData.lastName);
+            setMonthlySalary(editRowData.monthlySalary);
+            setDate(editRowData.date);
+        }
+    }, [editRowData]);
+
+    const handleAddOrUpdate = () => {
+        if (name.trim() === '' || lastName.trim() === '' || monthlySalary === '' || date.trim() === '') {
+            alert('Empty fields !!!');
             return;
         }
 
         const newAccount = {
             name: name,
-            accountType: accountType,
-            startingAmount: parseFloat(startingAmount),
-            currency: currency
+            lastName: lastName,
+            monthlySalary: parseFloat(monthlySalary),
+            date: date
         };
 
-        onAdd(newAccount);
+        if (editRowData) {
+            onAdd(editRowData.id, newAccount);
+        } else {
+            onAdd(newAccount);
+        }
 
         setName('');
-        setAccountType('');
-        setStartingAmount('');
-        setCurrency('');
+        setLastName('');
+        setMonthlySalary('');
+        setDate('');
     };
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle sx={{ backgroundColor: 'whitesmoke', display: 'flex', justifyContent: 'center' }}>Add Account</DialogTitle>
+            <DialogTitle sx={{ backgroundColor: 'whitesmoke', display: 'flex', justifyContent: 'center' }}>{editRowData ? 'Edit Account' : 'Add Account'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ m: 2 }}>
                 <Box>
@@ -42,43 +55,39 @@ function AddAccounts({ open, onClose, onAdd }) {
                         margin="normal"
                         variant="filled"
                     />
-                    <FormControl variant="filled" fullWidth sx={{ minWidth: 120 }}>
-                        <InputLabel id="account-type-label">Account Type</InputLabel>
-                        <Select
-                            labelId="account-type-label"
-                            value={accountType}
-                            onChange={(e) => setAccountType(e.target.value)}
-                        >
-                            <MenuItem value="General">General</MenuItem>
-                            <MenuItem value="Cash">Cash</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-                <Box>
                     <TextField
-                        label="Starting Amount"
-                        type="number"
-                        value={startingAmount}
-                        onChange={(e) => setStartingAmount(e.target.value)}
+                        label="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"
                     />
-                    <FormControl variant="filled" fullWidth sx={{ minWidth: 120 }}>
-                        <InputLabel >Currency</InputLabel>
-                        <Select
-                            value={currency}
-                            onChange={(e) => setCurrency(e.target.value)}
-                        >
-                            <MenuItem value="MDG">MDG</MenuItem>
-                            <MenuItem value="EUR">EUR</MenuItem>
-                        </Select>
-                    </FormControl>
+                </Box>
+                <Box>
+                    <TextField
+                        label="Monthly Salary"
+                        type="number"
+                        value={monthlySalary}
+                        onChange={(e) => setMonthlySalary(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <TextField
+                        label="Birthday"
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
                 </Box>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} variant="outlined" color="secondary">Cancel</Button>
-                <Button onClick={handleAdd} variant="outlined" color="primary">Add</Button>
+                <Button onClick={handleAddOrUpdate} variant="outlined" color="primary">{editRowData ? 'Update' : 'Add'}</Button>
             </DialogActions>
         </Dialog>
     );

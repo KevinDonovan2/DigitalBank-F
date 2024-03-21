@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import SideBar from './components/SideBar';
-import DashBar from './components/DashBar';
+import SideBar from '../dashboard/components/SideBar';
+import DashBar from '../dashboard/components/DashBar';
 import { DrawerProvider } from '../../context/DrawerContext';
 import AccountList from './components/AccountList';
 

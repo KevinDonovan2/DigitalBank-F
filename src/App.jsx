@@ -1,8 +1,8 @@
 import React from 'react';
 import Dashboard from './pages/dashboard/Dashboard';
-import Account from './pages/dashboard/Account';
-import Transaction from './pages/dashboard/Transaction';
-import Analystic from './pages/dashboard/Analystic';
+import Account from './pages/Account/Account';
+import Transaction from './pages/Transaction/Transaction';
+import Analystic from './pages/Analystic/Analystic';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NotFound from './pages/Error/NotFound';
 

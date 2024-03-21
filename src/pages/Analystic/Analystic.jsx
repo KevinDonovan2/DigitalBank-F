@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Stack ,Card , CardContent} from '@mui/material';
-import SideBar from './components/SideBar';
-import DashBar from './components/DashBar';
+import SideBar from '../dashboard/components/SideBar';
+import DashBar from '../dashboard/components/DashBar';
 import { DrawerProvider } from '../../context/DrawerContext';
 import ChartPie from './components/ChartPie';
 import ChartBar from './components/ChartBar';

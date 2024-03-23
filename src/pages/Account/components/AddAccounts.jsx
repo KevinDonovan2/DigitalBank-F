@@ -22,6 +22,13 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
             return;
         }
 
+        const selectedDate = new Date(date);
+        const maxDate = new Date(2003, 0, 1); // 1st January 2003
+        if (selectedDate >= maxDate) {
+            alert('Date must be before 2003!');
+            return;
+        }
+
         const newAccount = {
             name: name,
             lastName: lastName,

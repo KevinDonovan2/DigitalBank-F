@@ -4,18 +4,47 @@ import SideBar from './components/SideBar';
 import DashBar from './components/DashBar';
 import CircularProgress from '@mui/material/CircularProgress'; 
 import { DrawerProvider } from '../../context/DrawerContext';
+import axios from 'axios';
 
 function Dashboard() {
     const [loading, setLoading] = useState(true);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         const loadData = async () => {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            setLoading(false); 
+            try {
+                const response = await axios.get('http://localhost:8080/accounts');
+                setData(response.data);
+                setLoading(false); 
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
         };
         loadData();
         return () => {};
     }, []);
+
+    const calculateTotalLoans = () => {
+        if (data && data.length > 0) {
+            return data.reduce((acc, curr) => acc + curr.loans, 0);
+        }
+        return 0;
+    };
+
+    const calculateTotalMainBalance = () => {
+        if (data && data.length > 0) {
+            return data.reduce((acc, curr) => acc + curr.mainBalance, 0);
+        }
+        return 0;
+    };
+
+    const calculateTotalInterestOnLoans = () => {
+        if (data && data.length > 0) {
+            return data.reduce((acc, curr) => acc + curr.interestOnLoans, 0);
+        }
+        return 0;
+    };
 
     return (
         <DrawerProvider>
@@ -34,30 +63,30 @@ function Dashboard() {
                                     <Card sx={{ minWidth: 345 }}>
                                         <CardContent >
                                             <Typography variant="body2" color="text.secondary">
-                                                Sold principal:
+                                                Main Balance:
                                             </Typography>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                $2000
+                                                ${calculateTotalMainBalance()}
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                     <Card sx={{ minWidth: 345 }}>
                                         <CardContent >
                                             <Typography variant="body2" color="text.secondary">
-                                                Pret:
+                                                Total Loans:
                                             </Typography>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                $2000
+                                                ${calculateTotalLoans()}
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                     <Card sx={{ minWidth: 345 }}>
                                         <CardContent >
                                             <Typography variant="body2" color="text.secondary">
-                                                Intérêts des prêts:
+                                                Interest on Loans:
                                             </Typography>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                $2000
+                                                ${calculateTotalInterestOnLoans()}
                                             </Typography>
                                         </CardContent>
                                     </Card>

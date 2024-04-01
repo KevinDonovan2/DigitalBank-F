@@ -1,51 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Dialog, Divider, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import axios from 'axios';
 
 function AddAccounts({ open, onClose, onAdd, editRowData }) {
-    const [name, setName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [monthlySalary, setMonthlySalary] = useState('');
-    const [date, setDate] = useState('');
+    const [customerName, setCustomerName] = useState('');
+    const [customerLastName, setCustomerLastName] = useState('');
+    const [netMonthlySalary, setNetMonthlySalary] = useState('');
+    const [customerBirthdate, setCustomerBirthdate] = useState('');
 
     useEffect(() => {
         if (editRowData) {
-            setName(editRowData.name);
-            setLastName(editRowData.lastName);
-            setMonthlySalary(editRowData.monthlySalary);
-            setDate(editRowData.date);
+            setCustomerName(editRowData.customerName);
+            setCustomerLastName(editRowData.customerLastName);
+            setNetMonthlySalary(editRowData.netMonthlySalary);
+            setCustomerBirthdate(editRowData.customerBirthdate);
         }
     }, [editRowData]);
 
     const handleAddOrUpdate = () => {
-        if (name.trim() === '' || lastName.trim() === '' || monthlySalary === '' || date.trim() === '') {
+        if (customerName.trim() === '' || customerLastName.trim() === '' || netMonthlySalary === '' || customerBirthdate.trim() === '') {
             alert('Empty fields !!!');
             return;
         }
 
-        const selectedDate = new Date(date);
-        const maxDate = new Date(2003, 0, 1); // 1st January 2003
+        const selectedDate = new Date(customerBirthdate);
+        const maxDate = new Date(2003, 0, 1);
         if (selectedDate >= maxDate) {
             alert('Date must be before 2003!');
             return;
         }
 
         const newAccount = {
-            name: name,
-            lastName: lastName,
-            monthlySalary: parseFloat(monthlySalary),
-            date: date
+            customerName: customerName,
+            customerLastName: customerLastName,
+            netMonthlySalary: parseFloat(netMonthlySalary),
+            customerBirthdate: customerBirthdate
         };
 
         if (editRowData) {
-            onAdd(editRowData.id, newAccount);
+            axios.put(`http://localhost:8080/accounts/${editRowData.accountNumber}`, newAccount)
+                .then(response => {
+                    onAdd(response.data);
+                    onClose();
+                })
+                .catch(error => {
+                    console.error('Error updating account:', error);
+                });
         } else {
-            onAdd(newAccount);
+            axios.post('http://localhost:8080/accounts', newAccount)
+                .then(response => {
+                    onAdd(response.data);
+                    onClose();
+                })
+                .catch(error => {
+                    console.error('Error adding account:', error);
+                });
         }
 
-        setName('');
-        setLastName('');
-        setMonthlySalary('');
-        setDate('');
+        setCustomerName('');
+        setCustomerLastName('');
+        setNetMonthlySalary('');
+        setCustomerBirthdate('');
     };
 
     return (
@@ -55,17 +70,17 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
             <DialogContent sx={{ m: 2 }}>
                 <Box>
                     <TextField
-                        label="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        label="Customer Name"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"
                     />
                     <TextField
-                        label="Last Name"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        label="Customer Last Name"
+                        value={customerLastName}
+                        onChange={(e) => setCustomerLastName(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"
@@ -73,19 +88,19 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                 </Box>
                 <Box>
                     <TextField
-                        label="Monthly Salary"
+                        label="Net Monthly Salary"
                         type="number"
-                        value={monthlySalary}
-                        onChange={(e) => setMonthlySalary(e.target.value)}
+                        value={netMonthlySalary}
+                        onChange={(e) => setNetMonthlySalary(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"
                     />
                     <TextField
-                        label="Birthday"
+                        label="Customer Birthdate"
                         type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        value={customerBirthdate}
+                        onChange={(e) => setCustomerBirthdate(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"

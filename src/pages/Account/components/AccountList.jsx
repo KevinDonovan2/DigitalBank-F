@@ -14,26 +14,32 @@ import Swal from 'sweetalert2';
 import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
-    { id: 'name', label: 'Name', minWidth: 100 },
-    { id: 'lastName', label: 'Last Name', minWidth: 100 },
-    { id: 'monthlySalary', label: 'Monthly Salary', minWidth: 100 },
+    { id: 'accountNumber', label: 'Account Number', minWidth: 100 },
+    { id: 'customerName', label: 'Customer Name', minWidth: 100 },
+    { id: 'customerBirthdate', label: 'Birthdate', minWidth: 100 },
+    { id: 'netMonthlySalary', label: 'Net Monthly Salary', minWidth: 100 },
+    { id: 'mainBalance', label: 'Main Balance', minWidth: 100 },
+    { id: 'loans', label: 'Loans', minWidth: 100 },
+    { id: 'interestOnLoans', label: 'Interest on Loans', minWidth: 100 },
+    { id: 'decouvertAutorise', label: 'Overdraft Authorized', minWidth: 100 },
+    { id: 'creditAuthorized', label: 'Credit Authorized', minWidth: 100 },
     { id: 'edit', label: '', minWidth: 100 },
     { id: 'delete', label: '', minWidth: 100 },
 ];
 
 function AccountList() {
-    const [rows, setRows] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [editRowData, setEditRowData] = useState(null);
+    const [accounts, setAccounts] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/transactions')
+        axios.get('http://localhost:8080/accounts')
             .then(response => {
-                setRows(response.data);
+                setAccounts(response.data);
             })
             .catch(error => {
-                console.error('Error fetching transactions:', error);
+                console.error('Error fetching accounts:', error);
             });
     }, []);
 
@@ -50,22 +56,15 @@ function AccountList() {
     };
 
     const handleAdd = (newAccount) => {
-        setRows(prevRows => [...prevRows, newAccount]);
-
+        setAccounts(prevAccounts => [...prevAccounts, newAccount]);
         setIsAddDialogOpen(false);
     };
 
     const handleEdit = (id) => {
-        const rowDataToEdit = rows.find(row => row.id === id);
+        const rowDataToEdit = accounts.find(account => account.accountNumber === id);
         setEditRowData(rowDataToEdit);
         setIsAddDialogOpen(true);
     };
-
-
-    const filteredRows = rows.filter(row =>
-        row.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.lastName.toLowerCase().includes(searchValue.toLowerCase())
-    );
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -78,9 +77,8 @@ function AccountList() {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Filtrer les lignes pour supprimer uniquement la section avec l'ID correspondant
-                const updatedRows = rows.filter(row => row.id !== id);
-                setRows(updatedRows);
+                const updatedAccounts = accounts.filter(account => account.accountNumber !== id);
+                setAccounts(updatedAccounts);
                 Swal.fire(
                     'Deleted!',
                     'Your section has been deleted.',
@@ -89,6 +87,11 @@ function AccountList() {
             }
         });
     };
+
+    const filteredAccounts = accounts.filter(account =>
+        account.customerName.toLowerCase().includes(searchValue.toLowerCase()) ||
+        account.accountNumber.toString().includes(searchValue)
+    );
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -124,18 +127,23 @@ function AccountList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredRows.map((row) => {
+                        {filteredAccounts.map((account) => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                    <TableCell align='left'>{row.name}</TableCell>
-                                    <TableCell align='left'>{row.lastName}</TableCell>
-                                    <TableCell align='left'>{row.monthlySalary}ar</TableCell>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={account.accountNumber}>
+                                    <TableCell align='left'>{account.accountNumber}</TableCell>
+                                    <TableCell align='left'>{account.customerName}</TableCell>
+                                    <TableCell align='left'>{new Date(account.customerBirthdate).toLocaleDateString()}</TableCell>
+                                    <TableCell align='left'>{account.netMonthlySalary}ar</TableCell>
+                                    <TableCell align='left'>{account.mainBalance}ar</TableCell>
+                                    <TableCell align='left'>{account.loans}ar</TableCell>
+                                    <TableCell align='left'>{account.interestOnLoans}ar</TableCell>
+                                    <TableCell align='left'>{account.decouvertAutorise ? 'Yes' : 'No'}</TableCell>
+                                    <TableCell align='left'>{account.creditAuthorized}ar</TableCell>
                                     <TableCell align='left'>
-                                        <Button variant="contained" onClick={() => handleEdit(row.id)}> <EditIcon /></Button>
+                                        <Button variant="contained" onClick={() => handleEdit(account.accountNumber)}> <EditIcon /></Button>
                                     </TableCell>
-                                    {/* Cellule pour le bouton "Delete" */}
                                     <TableCell align='left'>
-                                        <Button variant="contained" onClick={() => handleDelete(row.id)}> <DeleteSweepIcon /></Button>
+                                        <Button variant="contained" onClick={() => handleDelete(account.accountNumber)}> <DeleteSweepIcon /></Button>
                                     </TableCell>
                                 </TableRow>
                             );

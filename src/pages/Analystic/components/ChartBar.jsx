@@ -1,35 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Chart } from 'react-google-charts';
-
-export const data = [
-    ['Date', 'Amout'],
-    ['1/11', 200],
-    ['1/12', 2800],
-    ['1/13', 900],
-    ['1/14', 1000],
-    ['1/15', 2000],
-    ['1/16', 1500],
-    ['1/17', 1000],
-    ['1/18', 1170],
-    ['1/19', 660],
-    ['1/20', 1030],
-];
-
-export const options = {
-    isStacked: true,
-    height: 300,
-    legend: { position: 'top', maxLines: 3 },
-    vAxis: { minValue: 0 },
-};
+import axios from 'axios';
 
 export default function ChartBar() {
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/accounts');
+                // Assuming response.data is an array of objects with 'customerName' and 'mainBalance' properties
+                const data = response.data.map(account => [account.customerName, account.mainBalance]);
+                // Prepending the header row
+                data.unshift(['Name', 'MainBalances']);
+                setChartData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const options = {
+        title: 'All accounts',
+        is3D: true,
+    };
+
     return (
         <Chart
             chartType="AreaChart"
-            width="100%"
-            height="400px"
-            data={data}
+            data={chartData}
             options={options}
+            width={'100%'}
+            height={'400px'}
         />
     );
 }

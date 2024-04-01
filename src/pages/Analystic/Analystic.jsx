@@ -32,7 +32,7 @@ function Analystic() {
                     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                         <Grid container spacing={1}>
                             <Stack spacing={2} direction="row">
-                                <Card sx={{ maxWidth: 645, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}> {/* Added boxShadow */}
+                                <Card sx={{ maxWidth: 655, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}> {/* Added boxShadow */}
                                     <CardContent>
                                         <ChartPie />
                                     </CardContent>

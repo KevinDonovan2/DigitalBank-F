@@ -22,7 +22,6 @@ const columns = [
     { id: 'loans', label: 'Loans', minWidth: 100 },
     { id: 'interestOnLoans', label: 'Interest on Loans', minWidth: 100 },
     { id: 'decouvertAutorise', label: 'Overdraft Authorized', minWidth: 100 },
-    { id: 'creditAuthorized', label: 'Credit Authorized', minWidth: 100 },
     { id: 'edit', label: '', minWidth: 100 },
     { id: 'delete', label: '', minWidth: 100 },
 ];
@@ -77,13 +76,24 @@ function AccountList() {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                const updatedAccounts = accounts.filter(account => account.accountNumber !== id);
-                setAccounts(updatedAccounts);
-                Swal.fire(
-                    'Deleted!',
-                    'Your section has been deleted.',
-                    'success'
-                );
+                axios.delete(`http://localhost:8080/accounts/${id}`)
+                    .then(() => {
+                        const updatedAccounts = accounts.filter(account => account.accountNumber !== id);
+                        setAccounts(updatedAccounts);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your section has been deleted.',
+                            'success'
+                        );
+                    })
+                    .catch(error => {
+                        console.error('Error deleting account:', error);
+                        Swal.fire(
+                            'Error!',
+                            'Failed to delete the account.',
+                            'error'
+                        );
+                    });
             }
         });
     };
@@ -126,7 +136,7 @@ function AccountList() {
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody >
                         {filteredAccounts.map((account) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={account.accountNumber}>
@@ -136,9 +146,8 @@ function AccountList() {
                                     <TableCell align='left'>{account.netMonthlySalary}ar</TableCell>
                                     <TableCell align='left'>{account.mainBalance}ar</TableCell>
                                     <TableCell align='left'>{account.loans}ar</TableCell>
-                                    <TableCell align='left'>{account.interestOnLoans}ar</TableCell>
+                                    <TableCell align='left'>{account.interestOnLoans}%</TableCell>
                                     <TableCell align='left'>{account.decouvertAutorise ? 'Yes' : 'No'}</TableCell>
-                                    <TableCell align='left'>{account.creditAuthorized}ar</TableCell>
                                     <TableCell align='left'>
                                         <Button variant="contained" onClick={() => handleEdit(account.accountNumber)}> <EditIcon /></Button>
                                     </TableCell>

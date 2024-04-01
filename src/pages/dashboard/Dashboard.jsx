@@ -66,7 +66,7 @@ function Dashboard() {
                                                 Main Balance:
                                             </Typography>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                ${calculateTotalMainBalance()}
+                                                {calculateTotalMainBalance()}ar
                                             </Typography>
                                         </CardContent>
                                     </Card>
@@ -76,7 +76,7 @@ function Dashboard() {
                                                 Total Loans:
                                             </Typography>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                ${calculateTotalLoans()}
+                                                {calculateTotalLoans()}ar
                                             </Typography>
                                         </CardContent>
                                     </Card>
@@ -86,7 +86,7 @@ function Dashboard() {
                                                 Interest on Loans:
                                             </Typography>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                ${calculateTotalInterestOnLoans()}
+                                                {calculateTotalInterestOnLoans()}%
                                             </Typography>
                                         </CardContent>
                                     </Card>

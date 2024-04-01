@@ -12,7 +12,7 @@ function Analystic() {
 
     useEffect(() => {
         const loadData = async () => {
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1000));
             setLoading(false);
         };
         loadData();

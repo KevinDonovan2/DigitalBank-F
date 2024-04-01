@@ -11,13 +11,15 @@ import axios from 'axios';
 import AddVirement from './AddVirement';
 import AddRetrait from './AddRetrait';
 
-// Ajout du champ "status" aux colonnes
+// Ajout du champ "state" aux colonnes
 const columns = [
-    { id: 'accountName', label: 'Account Name', minWidth: 100 },
+    { id: 'idTransfer', label: 'ID Transfer', minWidth: 100 },
     { id: 'reason', label: 'Reason', minWidth: 100 },
-    { id: 'date', label: 'Date', minWidth: 100 },
+    { id: 'registerDate', label: 'Register Date', minWidth: 100 },
     { id: 'amount', label: 'Amount', minWidth: 100 },
-    { id: 'status', label: 'Status', minWidth: 100 }, // Nouveau champ pour le status
+    { id: 'state', label: 'State', minWidth: 100 },
+    { id: 'accountNumber', label: 'Account send', minWidth: 100 },
+    { id: 'destinataireAccountNumber', label: 'Account receve', minWidth: 100 },
 ];
 
 function TransactionList() {
@@ -27,9 +29,18 @@ function TransactionList() {
     const [transactionType, setTransactionType] = useState('');
 
     useEffect(() => {
-        axios.get('/api/transactions')
+        axios.get('http://localhost:8080/transferts')
             .then(response => {
-                setRows(response.data);
+                const transformedData = response.data.map(transaction => ({
+                    idTransfer: transaction.idTransfer,
+                    reason: transaction.reason,
+                    registerDate: transaction.registerDate,
+                    amount: transaction.amount,
+                    state: transaction.state,
+                    accountNumber: transaction.accountNumber,
+                    destinataireAccountNumber: transaction.destinataireAccountNumber,
+                }));
+                setRows(transformedData);
             })
             .catch(error => {
                 console.error('Error fetching transactions:', error);
@@ -61,9 +72,8 @@ function TransactionList() {
     
 
     const filteredRows = rows.filter(row =>
-        row.accountName.toLowerCase().includes(searchValue.toLowerCase()) ||
         row.reason.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    );    
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -102,17 +112,17 @@ function TransactionList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredRows.map((row) => {
-                            return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                    <TableCell align='left'>{row.accountName}</TableCell>
-                                    <TableCell align='left'>{row.reason}</TableCell>
-                                    <TableCell align='left'>{row.date}</TableCell>
-                                    <TableCell align='left'>{row.amount}</TableCell>
-                                    <TableCell align='left'>{row.status}</TableCell>
-                                </TableRow>
-                            );
-                        })}
+                        {filteredRows.map((row) => (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.idTransfer}>
+                                <TableCell align='left'>{row.idTransfer}</TableCell>
+                                <TableCell align='left'>{row.reason}</TableCell>
+                                <TableCell align='left'>{row.registerDate}</TableCell>
+                                <TableCell align='left'>{row.amount}</TableCell>
+                                <TableCell align='left'>{row.state}</TableCell>
+                                <TableCell align='left'>{row.accountNumber}</TableCell>
+                                <TableCell align='left'>{row.destinataireAccountNumber}</TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>

@@ -1,31 +1,60 @@
 import React, { useState } from 'react';
 import { Box, Dialog, Divider, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import axios from 'axios';
 
 function AddVirement({ open, onClose, onAdd }) {
-    const [accountName, setAccountName] = useState('');
+    const [idTransfer, setIdTransfer] = useState('');
     const [reason, setReason] = useState('');
-    const [date, setDate] = useState('');
+    const [applyDate, setApplyDate] = useState('');
+    const [registerDate, setRegisterDate] = useState('');
     const [amount, setAmount] = useState('');
+    const [state, setState] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [destinataireAccountNumber, setDestinataireAccountNumber] = useState('');
 
     const handleAdd = () => {
-        if (accountName.trim() === '' || reason.trim() === '' || date.trim() === '' || amount === '') {
+        if (
+            idTransfer.trim() === '' ||
+            reason.trim() === '' ||
+            registerDate.trim() === '' ||
+            amount === '' ||
+            state.trim() === '' ||
+            accountNumber.trim() === '' ||
+            destinataireAccountNumber.trim() === ''
+        ) {
             alert('Empty fields !!!');
             return;
         }
 
         const newTransaction = {
-            accountName: accountName,
+            idTransfer: idTransfer,
             reason: reason,
-            date: date,
-            amount: parseFloat(amount)
+            registerDate: registerDate,
+            applyDate: applyDate,
+            amount: parseFloat(amount),
+            state: state,
+            accountNumber: accountNumber,
+            destinataireAccountNumber: destinataireAccountNumber
         };
 
-        onAdd(newTransaction);
-
-        setAccountName('');
-        setReason('');
-        setDate('');
-        setAmount('');
+        axios.post('http://localhost:8080/transferts', newTransaction)
+            .then(response => {
+                console.log('Transaction added successfully:', response.data);
+                onAdd(newTransaction);
+                setIdTransfer('');
+                setReason('');
+                setApplyDate('');
+                setRegisterDate('');
+                setAmount('');
+                setState('');
+                setAccountNumber('');
+                setDestinataireAccountNumber('');
+                onClose();
+            })
+            .catch(error => {
+                console.error('Error adding transaction:', error);
+                alert('An error occurred while adding the transaction.');
+            });
     };
 
     return (
@@ -35,9 +64,9 @@ function AddVirement({ open, onClose, onAdd }) {
             <DialogContent sx={{ m: 2 }}>
                 <Box>
                     <TextField
-                        label="Account Name"
-                        value={accountName}
-                        onChange={(e) => setAccountName(e.target.value)}
+                        label="ID Transfer"
+                        value={idTransfer}
+                        onChange={(e) => setIdTransfer(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"
@@ -50,13 +79,20 @@ function AddVirement({ open, onClose, onAdd }) {
                         margin="normal"
                         variant="filled"
                     />
-                </Box>
-                <Box>
                     <TextField
-                        label="Date"
+                        label="Register Date"
                         type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        value={applyDate}
+                        onChange={(e) => setApplyDate(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <TextField
+                        label="Register Date"
+                        type="date"
+                        value={registerDate}
+                        onChange={(e) => setRegisterDate(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"
@@ -66,6 +102,32 @@ function AddVirement({ open, onClose, onAdd }) {
                         type="number"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <TextField
+                        label="State"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <TextField
+                        label="Account send"
+                        type="number"
+                        value={accountNumber}
+                        onChange={(e) => setAccountNumber(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="filled"
+                    />
+                    <TextField
+                        label="Account receive"
+                        type="number"
+                        value={destinataireAccountNumber}
+                        onChange={(e) => setDestinataireAccountNumber(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"

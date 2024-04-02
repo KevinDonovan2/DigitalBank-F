@@ -11,7 +11,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import AddAccounts from './AddAccounts';
 import Swal from 'sweetalert2';
-import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
     { id: 'accountNumber', label: 'Account Number', minWidth: 100 },
@@ -22,14 +21,13 @@ const columns = [
     { id: 'loans', label: 'Loans', minWidth: 100 },
     { id: 'interestOnLoans', label: 'Interest on Loans', minWidth: 100 },
     { id: 'decouvertAutorise', label: 'Overdraft Authorized', minWidth: 100 },
-    { id: 'edit', label: '', minWidth: 100 },
     { id: 'delete', label: '', minWidth: 100 },
 ];
 
 function AccountList() {
     const [searchValue, setSearchValue] = useState('');
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-    const [editRowData, setEditRowData] = useState(null);
+    // const [editRowData, setEditRowData] = useState(null); // Cette ligne est supprimée car la variable n'est pas utilisée
     const [accounts, setAccounts] = useState([]);
 
     useEffect(() => {
@@ -57,12 +55,6 @@ function AccountList() {
     const handleAdd = (newAccount) => {
         setAccounts(prevAccounts => [...prevAccounts, newAccount]);
         setIsAddDialogOpen(false);
-    };
-
-    const handleEdit = (id) => {
-        const rowDataToEdit = accounts.find(account => account.accountNumber === id);
-        setEditRowData(rowDataToEdit);
-        setIsAddDialogOpen(true);
     };
 
     const handleDelete = (id) => {
@@ -149,9 +141,6 @@ function AccountList() {
                                     <TableCell align='left'>{account.interestOnLoans}%</TableCell>
                                     <TableCell align='left'>{account.decouvertAutorise ? 'Yes' : 'No'}</TableCell>
                                     <TableCell align='left'>
-                                        <Button variant="contained" onClick={() => handleEdit(account.accountNumber)}> <EditIcon /></Button>
-                                    </TableCell>
-                                    <TableCell align='left'>
                                         <Button variant="contained" onClick={() => handleDelete(account.accountNumber)}> <DeleteSweepIcon /></Button>
                                     </TableCell>
                                 </TableRow>
@@ -160,7 +149,7 @@ function AccountList() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <AddAccounts open={isAddDialogOpen} onClose={handleCloseAddDialog} onAdd={handleAdd} editRowData={editRowData} />
+            <AddAccounts open={isAddDialogOpen} onClose={handleCloseAddDialog} onAdd={handleAdd} editRowData={null} />
         </Paper>
     );
 }

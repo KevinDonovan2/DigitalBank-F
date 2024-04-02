@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Box, Grid, Card, CardContent, Typography, Stack } from '@mui/material';
 import SideBar from './components/SideBar';
 import DashBar from './components/DashBar';
-import CircularProgress from '@mui/material/CircularProgress'; 
+import CircularProgress from '@mui/material/CircularProgress';
 import { DrawerProvider } from '../../context/DrawerContext';
+import ChartPie from '../Analystic/components/ChartPie';
 import axios from 'axios';
 
 function Dashboard() {
@@ -15,14 +16,14 @@ function Dashboard() {
             try {
                 const response = await axios.get('http://localhost:8080/accounts');
                 setData(response.data);
-                setLoading(false); 
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setLoading(false);
             }
         };
         loadData();
-        return () => {};
+        return () => { };
     }, []);
 
     const calculateTotalLoans = () => {
@@ -49,48 +50,65 @@ function Dashboard() {
     return (
         <DrawerProvider>
             <DashBar />
-            <Box sx={{ display: 'flex', flexGrow: 1, p: 2, mt: 5, backgroundColor: 'whitesmoke', height: '93vh' }}>
+            <Box sx={{ display: 'flex', flexGrow: 1, p: 2, mt: 5, backgroundColor: 'whitesmoke', height: '100vh' }}>
                 <SideBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={8}>
                             {loading ? (
-                                <Box sx={{ml:60,mt:10 }}>
+                                <Box sx={{ ml: 60, mt: 10 }}>
                                     <CircularProgress />
                                 </Box>
                             ) : (
-                                <Stack spacing={2} direction="row">
-                                    <Card sx={{ minWidth: 345 }}>
-                                        <CardContent >
-                                            <Typography variant="body2" color="text.secondary">
-                                                Main Balance:
-                                            </Typography>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {calculateTotalMainBalance()}ar
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                    <Card sx={{ minWidth: 345 }}>
-                                        <CardContent >
-                                            <Typography variant="body2" color="text.secondary">
-                                                Total Loans:
-                                            </Typography>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {calculateTotalLoans()}ar
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                    <Card sx={{ minWidth: 345 }}>
-                                        <CardContent >
-                                            <Typography variant="body2" color="text.secondary">
-                                                Interest on Loans:
-                                            </Typography>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {calculateTotalInterestOnLoans()}%
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Stack>
+                                <Box sx={{ display: 'flex',flexGrow: 1, flexDirection: 'column', gap: 2 ,minWidth:1050}}>
+                                    <Stack spacing={2} direction="row">
+                                        <Card sx={{ width:'100%' }}>
+                                            <CardContent >
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Main Balance:
+                                                </Typography>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {calculateTotalMainBalance()}ar
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                        <Card sx={{ width:'100%' }}>
+                                            <CardContent >
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Total Loans:
+                                                </Typography>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {calculateTotalLoans()}ar
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                        <Card sx={{ width:'100%' }}>
+                                            <CardContent >
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Interest on Loans:
+                                                </Typography>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {calculateTotalInterestOnLoans()}%
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Stack>
+                                    <Stack spacing={2} direction="row">
+                                        <Card sx={{ width:'100%' }}>
+                                            <ChartPie />
+                                        </Card>
+                                        <Card sx={{ width:'100%' }}>
+                                            <CardContent >
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Interest on Loans:
+                                                </Typography>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {calculateTotalInterestOnLoans()}%
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Stack>
+                                </Box>
                             )}
                         </Grid>
                     </Grid>

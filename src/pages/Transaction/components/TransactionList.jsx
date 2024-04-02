@@ -11,7 +11,6 @@ import axios from 'axios';
 import AddVirement from './AddVirement';
 import AddRetrait from './AddRetrait';
 
-// Ajout du champ "state" aux colonnes
 const columns = [
     { id: 'idTransfer', label: 'ID Transfer', minWidth: 100 },
     { id: 'reason', label: 'Reason', minWidth: 100 },

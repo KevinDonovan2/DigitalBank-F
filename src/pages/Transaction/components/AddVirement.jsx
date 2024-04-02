@@ -3,10 +3,7 @@ import { Box, Dialog, Divider, DialogTitle, DialogContent, DialogActions, TextFi
 import axios from 'axios';
 
 function AddVirement({ open, onClose, onAdd }) {
-    const [idTransfer, setIdTransfer] = useState('');
     const [reason, setReason] = useState('');
-    const [applyDate, setApplyDate] = useState('');
-    const [registerDate, setRegisterDate] = useState('');
     const [amount, setAmount] = useState('');
     const [state, setState] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
@@ -14,9 +11,7 @@ function AddVirement({ open, onClose, onAdd }) {
 
     const handleAdd = () => {
         if (
-            idTransfer.trim() === '' ||
             reason.trim() === '' ||
-            registerDate.trim() === '' ||
             amount === '' ||
             state.trim() === '' ||
             accountNumber.trim() === '' ||
@@ -27,10 +22,7 @@ function AddVirement({ open, onClose, onAdd }) {
         }
 
         const newTransaction = {
-            idTransfer: idTransfer,
             reason: reason,
-            registerDate: registerDate,
-            applyDate: applyDate,
             amount: parseFloat(amount),
             state: state,
             accountNumber: accountNumber,
@@ -41,10 +33,7 @@ function AddVirement({ open, onClose, onAdd }) {
             .then(response => {
                 console.log('Transaction added successfully:', response.data);
                 onAdd(newTransaction);
-                setIdTransfer('');
                 setReason('');
-                setApplyDate('');
-                setRegisterDate('');
                 setAmount('');
                 setState('');
                 setAccountNumber('');
@@ -64,35 +53,9 @@ function AddVirement({ open, onClose, onAdd }) {
             <DialogContent sx={{ m: 2 }}>
                 <Box>
                     <TextField
-                        label="ID Transfer"
-                        value={idTransfer}
-                        onChange={(e) => setIdTransfer(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="filled"
-                    />
-                    <TextField
                         label="Reason"
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="filled"
-                    />
-                    <TextField
-                        label="Register Date"
-                        type="date"
-                        value={applyDate}
-                        onChange={(e) => setApplyDate(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="filled"
-                    />
-                    <TextField
-                        label="Register Date"
-                        type="date"
-                        value={registerDate}
-                        onChange={(e) => setRegisterDate(e.target.value)}
                         fullWidth
                         margin="normal"
                         variant="filled"

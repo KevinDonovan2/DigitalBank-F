@@ -7,10 +7,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
     const [customerBirthdate, setCustomerBirthdate] = useState('');
     const [netMonthlySalary, setNetMonthlySalary] = useState('');
     const [mainBalance, setMainBalance] = useState('');
-    const [loans, setLoans] = useState('');
-    const [interestOnLoans, setInterestOnLoans] = useState('');
     const [decouvertAutorise, setDecouvertAutorise] = useState(true);
-    const [creditAuthorized, setCreditAuthorized] = useState('');
 
     useEffect(() => {
         if (editRowData) {
@@ -18,30 +15,36 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
             setCustomerBirthdate(editRowData.customerBirthdate || '');
             setNetMonthlySalary(editRowData.netMonthlySalary || '');
             setMainBalance(editRowData.mainBalance || '');
-            setLoans(editRowData.loans || '');
-            setInterestOnLoans(editRowData.interestOnLoans || '');
             setDecouvertAutorise(editRowData.decouvertAutorise || true);
-            setCreditAuthorized(editRowData.creditAuthorized || '');
         }
     }, [editRowData]);
 
     const handleAddOrUpdate = () => {
-        if (customerName.trim() === '' || customerBirthdate.trim() === '' || netMonthlySalary === '' || mainBalance === '' || loans === '' || interestOnLoans === '' || creditAuthorized === '') {
+        if (customerName.trim() === '' || customerBirthdate.trim() === '' || netMonthlySalary === '' || mainBalance === '') {
             alert('Veuillez remplir tous les champs !');
             return;
         }
 
+        const birthdate = new Date(customerBirthdate);
+        const today = new Date();
+        let age = today.getFullYear() - birthdate.getFullYear();
+        const month = today.getMonth() - birthdate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthdate.getDate())) {
+            age--;
+        }
+        if (age < 21) {
+            alert('Le client doit avoir au moins 21 ans pour ouvrir un compte !');
+            return;
+        }
+    
         const newAccount = {
             customerName: customerName,
             customerBirthdate: customerBirthdate,
             netMonthlySalary: parseFloat(netMonthlySalary),
             mainBalance: parseFloat(mainBalance),
-            loans: parseFloat(loans),
-            interestOnLoans: parseFloat(interestOnLoans),
-            decouvertAutorise: decouvertAutorise,
-            creditAuthorized: parseFloat(creditAuthorized)
+            decouvertAutorise: decouvertAutorise
         };
-
+    
         if (editRowData) {
             axios.put(`http://localhost:8080/accounts/${editRowData.accountNumber}`, newAccount)
                 .then(response => {
@@ -61,15 +64,12 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                     console.error('Erreur lors de l\'ajout du compte:', error);
                 });
         }
-
+    
         setCustomerName('');
         setCustomerBirthdate('');
         setNetMonthlySalary('');
         setMainBalance('');
-        setLoans('');
-        setInterestOnLoans('');
-        setCreditAuthorized('');
-    };
+    };    
 
     return (
         <Dialog open={open} onClose={onClose} >
@@ -117,26 +117,6 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                 </Box>
                 <Box>
                     <TextField
-                        label="Prêts"
-                        type="number"
-                        value={loans}
-                        onChange={(e) => setLoans(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="filled"
-                    />
-                    <TextField
-                        label="Intérêts sur les prêts"
-                        type="number"
-                        value={interestOnLoans}
-                        onChange={(e) => setInterestOnLoans(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="filled"
-                    />
-                </Box>
-                <Box>
-                    <TextField
                         label="Découvert autorisé"
                         select
                         value={decouvertAutorise}
@@ -148,15 +128,6 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                         <MenuItem value={true}>Oui</MenuItem>
                         <MenuItem value={false}>Non</MenuItem>
                     </TextField>
-                    <TextField
-                        label="Crédit autorisé"
-                        type="number"
-                        value={creditAuthorized}
-                        onChange={(e) => setCreditAuthorized(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="filled"
-                    />
                 </Box>
             </DialogContent>
             <DialogActions>

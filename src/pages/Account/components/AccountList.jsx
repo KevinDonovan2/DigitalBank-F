@@ -91,9 +91,10 @@ function AccountList() {
     };
 
     const filteredAccounts = accounts.filter(account =>
-        account.customerName.toLowerCase().includes(searchValue.toLowerCase()) ||
-        account.accountNumber.toString().includes(searchValue)
-    );
+        account.customerName && 
+        (account.customerName.toLowerCase().includes(searchValue.toLowerCase()) ||
+        account.accountNumber.toString().includes(searchValue))
+    );    
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>

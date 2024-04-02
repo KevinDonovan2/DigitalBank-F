@@ -111,7 +111,7 @@ function AccountList() {
                         onChange={handleSearchChange}
                     />
                 </div>
-                <Button variant="contained" onClick={handleAddAccount} sx={{ margin: '20px' }}>+ Add</Button>
+                <Button variant="contained" onClick={handleAddAccount} sx={{ margin: '20px', color:'white' }}>+ Add</Button>
             </div>
             <Divider />
             <TableContainer sx={{ maxHeight: 440 }}>
@@ -142,7 +142,7 @@ function AccountList() {
                                     <TableCell align='left'>{account.interestOnLoans}%</TableCell>
                                     <TableCell align='left'>{account.decouvertAutorise ? 'Yes' : 'No'}</TableCell>
                                     <TableCell align='left'>
-                                        <Button variant="contained" onClick={() => handleDelete(account.accountNumber)}> <DeleteSweepIcon /></Button>
+                                        <Button variant="contained" sx={{backgroundColor:'red' , color:'white'}} onClick={() => handleDelete(account.accountNumber)}> <DeleteSweepIcon /></Button>
                                     </TableCell>
                                 </TableRow>
                             );

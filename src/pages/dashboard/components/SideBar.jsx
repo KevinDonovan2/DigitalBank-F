@@ -77,9 +77,9 @@ export default function SideBar() {
     const navigate = useNavigate();
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex'}}>
             <CssBaseline />
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={open} >
                 <DrawerHeader>
                     <IconButton onClick={() => setOpen(!open)}>
                         {theme.direction === 'rtl' ? (
@@ -90,124 +90,126 @@ export default function SideBar() {
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List>
-                    <ListItem
-                        disablePadding
-                        sx={{ display: 'block' }}
-                        onClick={() => {
-                            navigate('/');
-                        }}
-                    >
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
+                <Box sx={{backgroundColor:'grey', height:'100%' ,color:'white'}}>
+                    <List >
+                        <ListItem
+                            disablePadding
+                            sx={{ display: 'block' }}
+                            onClick={() => {
+                                navigate('/');
                             }}
                         >
-                            <ListItemIcon
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                <List>
-                    <ListItem
-                        disablePadding
-                        sx={{ display: 'block' }}
-                        onClick={() => {
-                            navigate('/account');
-                        }}
-                    >
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <HomeIcon sx={{color:'white'}}/>
+                                </ListItemIcon>
+                                <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                    <List>
+                        <ListItem
+                            disablePadding
+                            sx={{ display: 'block' }}
+                            onClick={() => {
+                                navigate('/account');
                             }}
                         >
-                            <ListItemIcon
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <PeopleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Accounts" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                <List>
-                    <ListItem
-                        disablePadding
-                        sx={{ display: 'block' }}
-                        onClick={() => {
-                            navigate('/transaction');
-                        }}
-                    >
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <PeopleIcon sx={{color:'white'}}/>
+                                </ListItemIcon>
+                                <ListItemText primary="Accounts" sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                    <List>
+                        <ListItem
+                            disablePadding
+                            sx={{ display: 'block' }}
+                            onClick={() => {
+                                navigate('/transaction');
                             }}
                         >
-                            <ListItemIcon
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <PaidIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="Transaction"
-                                sx={{ opacity: open ? 1 : 0 }}
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                <List>
-                    <ListItem
-                        disablePadding
-                        sx={{ display: 'block' }}
-                        onClick={() => {
-                            navigate('/analystic');
-                        }}
-                    >
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <PaidIcon sx={{color:'white'}}/>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="Transaction"
+                                    sx={{ opacity: open ? 1 : 0 }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                    <List>
+                        <ListItem
+                            disablePadding
+                            sx={{ display: 'block' }}
+                            onClick={() => {
+                                navigate('/analystic');
                             }}
                         >
-                            <ListItemIcon
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <InsertChartIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="Analystics"
-                                sx={{ opacity: open ? 1 : 0 }}
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <InsertChartIcon sx={{color:'white'}}/>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="Analystics"
+                                    sx={{ opacity: open ? 1 : 0 }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                </Box>
 
             </Drawer>
         </Box>

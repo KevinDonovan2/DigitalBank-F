@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Card, CardContent, Typography, Stack } from '@mui/material';
+import { Box, Grid, Card, CardContent, Typography,Divider, Stack, Table, TableBody, TableCell, TableHead, TableContainer, TableRow, Paper } from '@mui/material';
 import SideBar from './components/SideBar';
 import DashBar from './components/DashBar';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -7,8 +7,14 @@ import { DrawerProvider } from '../../context/DrawerContext';
 import ChartPie from '../Analystic/components/ChartPie';
 import axios from 'axios';
 
+const columns = [
+    { id: 'customerName', label: 'Customer Name', minWidth: 100 },
+    { id: 'mainBalance', label: 'Main Balance', minWidth: 100 },
+];
+
 function Dashboard() {
     const [loading, setLoading] = useState(true);
+    const [accounts, setAccounts] = useState([]);
     const [data, setData] = useState(null);
 
     useEffect(() => {
@@ -16,6 +22,7 @@ function Dashboard() {
             try {
                 const response = await axios.get('http://localhost:8080/accounts');
                 setData(response.data);
+                setAccounts(response.data); // Assuming the response data is an array of accounts
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -60,9 +67,9 @@ function Dashboard() {
                                     <CircularProgress />
                                 </Box>
                             ) : (
-                                <Box sx={{ display: 'flex',flexGrow: 1, flexDirection: 'column', gap: 2 ,minWidth:1050}}>
+                                <Box sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column', gap: 2, minWidth: 1050 }}>
                                     <Stack spacing={2} direction="row">
-                                        <Card sx={{ width:'100%' }}>
+                                        <Card sx={{ width: '100%' }}>
                                             <CardContent >
                                                 <Typography variant="body2" color="text.secondary">
                                                     Main Balance:
@@ -72,7 +79,7 @@ function Dashboard() {
                                                 </Typography>
                                             </CardContent>
                                         </Card>
-                                        <Card sx={{ width:'100%' }}>
+                                        <Card sx={{ width: '100%' }}>
                                             <CardContent >
                                                 <Typography variant="body2" color="text.secondary">
                                                     Total Loans:
@@ -82,7 +89,7 @@ function Dashboard() {
                                                 </Typography>
                                             </CardContent>
                                         </Card>
-                                        <Card sx={{ width:'100%' }}>
+                                        <Card sx={{ width: '100%' }}>
                                             <CardContent >
                                                 <Typography variant="body2" color="text.secondary">
                                                     Interest on Loans:
@@ -94,19 +101,44 @@ function Dashboard() {
                                         </Card>
                                     </Stack>
                                     <Stack spacing={2} direction="row">
-                                        <Card sx={{ width:'100%' }}>
+                                        <Card sx={{ width: '100%' }}>
                                             <ChartPie />
                                         </Card>
-                                        <Card sx={{ width:'100%' }}>
-                                            <CardContent >
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Interest on Loans:
-                                                </Typography>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    {calculateTotalInterestOnLoans()}%
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
+                                        <Paper sx={{ width: '100%' }}>
+                                            <Typography gutterBottom variant='h5' component='div' sx={{ mt: '20px', ml: '20px' }} >
+                                                Accounts List
+                                            </Typography>
+                                            <Divider />
+                                            <TableContainer >
+                                                <Table>
+                                                    <TableHead variant="body2">
+                                                        <TableRow>
+                                                            {columns.map((column) => (
+                                                                <TableCell
+                                                                    key={column.id}
+                                                                    align='left'
+                                                                    style={{ minWidth: column.minWidth }}
+                                                                >
+                                                                    {column.label}
+                                                                </TableCell>
+                                                            ))}
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody component={Paper}>
+                                                        {accounts.map(account => (
+                                                            <TableRow hover role="checkbox" tabIndex={-1} key={account.accountNumber}>
+                                                                <TableCell component="th" scope="row">
+                                                                    {account.customerName}
+                                                                </TableCell>
+                                                                <TableCell align='left'>
+                                                                    {account.mainBalance}ar
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </Paper>
                                     </Stack>
                                 </Box>
                             )}

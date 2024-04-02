@@ -90,8 +90,8 @@ function TransactionList() {
                     />
                 </div>
                 <div>
-                    <Button variant="contained" onClick={() => handleAddAccount('retrait')} sx={{ margin: '20px' }}>Retrait</Button>
-                    <Button variant="contained" onClick={() => handleAddAccount('virement')} sx={{ margin: '20px' }}>Virement</Button>
+                    <Button variant="contained" onClick={() => handleAddAccount('retrait')} sx={{ margin: '20px',color:'white' }}>Retrait</Button>
+                    <Button variant="contained" onClick={() => handleAddAccount('virement')} sx={{ margin: '20px',color:'white' }}>Virement</Button>
                 </div>
             </div>
             <Divider />

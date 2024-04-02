@@ -19,7 +19,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
         }
     }, [editRowData]);
 
-    const handleAddOrUpdate = () => {
+    const handleAdd = () => {
         if (customerName.trim() === '' || customerBirthdate.trim() === '' || netMonthlySalary === '' || mainBalance === '') {
             alert('Veuillez remplir tous les champs !');
             return;
@@ -36,7 +36,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
             alert('Le client doit avoir au moins 21 ans pour ouvrir un compte !');
             return;
         }
-    
+
         const newAccount = {
             customerName: customerName,
             customerBirthdate: customerBirthdate,
@@ -44,32 +44,21 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
             mainBalance: parseFloat(mainBalance),
             decouvertAutorise: decouvertAutorise
         };
-    
-        if (editRowData) {
-            axios.put(`http://localhost:8080/accounts/${editRowData.accountNumber}`, newAccount)
-                .then(response => {
-                    onAdd(response.data);
-                    onClose();
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la mise à jour du compte:', error);
-                });
-        } else {
-            axios.post('http://localhost:8080/accounts', newAccount)
-                .then(response => {
-                    onAdd(response.data);
-                    onClose();
-                })
-                .catch(error => {
-                    console.error('Erreur lors de l\'ajout du compte:', error);
-                });
-        }
-    
+
+        axios.post('http://localhost:8080/accounts', newAccount)
+            .then(response => {
+                onAdd(response.data);
+                onClose();
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'ajout du compte:', error);
+            });
+
         setCustomerName('');
         setCustomerBirthdate('');
         setNetMonthlySalary('');
         setMainBalance('');
-    };    
+    };
 
     return (
         <Dialog open={open} onClose={onClose} >
@@ -78,7 +67,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
             <DialogContent sx={{ m: 2 }}>
                 <Box>
                     <TextField
-                        label="Nom du client"
+                        label="Name"
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         fullWidth
@@ -86,7 +75,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                         variant="filled"
                     />
                     <TextField
-                        label="Date de naissance du client"
+                        label="Birthdate"
                         type="date"
                         value={customerBirthdate}
                         onChange={(e) => setCustomerBirthdate(e.target.value)}
@@ -97,7 +86,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                 </Box>
                 <Box>
                     <TextField
-                        label="Salaire mensuel net"
+                        label="Monthly Salary"
                         type="number"
                         value={netMonthlySalary}
                         onChange={(e) => setNetMonthlySalary(e.target.value)}
@@ -106,7 +95,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                         variant="filled"
                     />
                     <TextField
-                        label="Solde principal"
+                        label="Main Balance"
                         type="number"
                         value={mainBalance}
                         onChange={(e) => setMainBalance(e.target.value)}
@@ -117,7 +106,7 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                 </Box>
                 <Box>
                     <TextField
-                        label="Découvert autorisé"
+                        label="Decouvert Autorise"
                         select
                         value={decouvertAutorise}
                         onChange={(e) => setDecouvertAutorise(e.target.value)}
@@ -131,8 +120,8 @@ function AddAccounts({ open, onClose, onAdd, editRowData }) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} variant="outlined" color="secondary">Annuler</Button>
-                <Button onClick={handleAddOrUpdate} variant="outlined" color="primary">{editRowData ? 'Modifier' : 'Ajouter'}</Button>
+                <Button onClick={onClose} variant="outlined" color="secondary">Cancel</Button>
+                <Button onClick={handleAdd} variant="outlined" color="primary">ADD</Button>
             </DialogActions>
         </Dialog>
     );

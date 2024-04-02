@@ -57,7 +57,7 @@ export default function DashBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="fixed">
+            <AppBar position="fixed" sx={{backgroundColor:'grey', color:'white'}}>
                 <Toolbar>
                     <Box>
                         <IconButton
